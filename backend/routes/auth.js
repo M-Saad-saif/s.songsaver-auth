@@ -129,7 +129,7 @@ router.delete("/deleteuser", fetchuser, async (req, res) => {
     // finding user by id
     const userId = req.user.id;
     const user = await User.findByIdAndDelete(userId).select("-password");
-    
+
     // checking if user not found
     if (!user) {
       res.status(401).json({ error: "no user found" });
