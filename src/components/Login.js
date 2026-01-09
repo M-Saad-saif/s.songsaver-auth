@@ -19,7 +19,7 @@ export default function Login() {
         <label htmlFor="password">Password</label>
         <input type="password" placeholder="Enter Password" id="password" />
 
-        <button className="signupBtns ">Login<i class="fa-solid fa-arrow-right-to-bracket text-dark"></i></button>
+        <button className="signupBtns ">Login<i className="fa-solid fa-arrow-right-to-bracket text-dark"></i></button>
         <Link to="/"><button className="signupBtns" id="homeBtn">Home</button></Link>
 
         <hr

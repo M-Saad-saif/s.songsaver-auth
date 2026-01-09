@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "./Images/logo1.png";
+import MusicImg from "./Images/music img.png";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
@@ -8,16 +9,28 @@ export default function Navbar() {
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           <img
+            src={MusicImg}
+            alt=""
+            style={{
+              width: "40px",
+              padding: "0",
+              margin: "0 2px",
+              height: "34px",
+            }}
+          />
+
+          <img
             src={logo}
             alt=""
             style={{
               width: "60px",
               padding: "0",
-              margin: "0 26px",
+              margin: "0 0px",
               height: "34px",
             }}
           />
         </Link>
+
         <button
           className="navbar-toggler"
           type="button"

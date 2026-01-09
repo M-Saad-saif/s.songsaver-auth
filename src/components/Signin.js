@@ -30,7 +30,7 @@ export default function Signin() {
         <button className="signupBtns ">
           Sign Up
           <small>
-            <i class="fa-solid fa-user-plus text-dark"></i>
+            <i className="fa-solid fa-user-plus text-dark"></i>
           </small>
         </button>
         <Link to="/">

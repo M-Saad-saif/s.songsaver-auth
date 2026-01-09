@@ -316,3 +316,165 @@ input {
   right: -30px;
   bottom: -39%;
 }
+
+/* ================================================= Playlist css ================================================== */
+
+
+
+
+/* From Uiverse.io by Cobp */
+.container_chat_bot {
+  display: flex;
+  flex-direction: column;
+  max-width: 550px;
+  width: 100%;
+}
+
+.container_chat_bot {
+  position: relative;
+  display: flex;
+  background: linear-gradient(to bottom right,
+      #7e7e7e,
+      #363636,
+      #363636,
+      #363636,
+      #363636);
+  border-radius: 16px;
+  padding: 1.5px;
+  overflow: hidden;
+  margin-bottom: 14px;
+
+  &::after {
+    position: absolute;
+    content: "";
+    top: -10px;
+    left: -10px;
+    background: radial-gradient(ellipse at center,
+        #ffffff,
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.1),
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0));
+    width: 30px;
+    height: 30px;
+    filter: blur(1px);
+  }
+}
+
+.container_chat_bot .chat {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.container_chat_bot .chat .chat-bot {
+  position: relative;
+  display: flex;
+}
+
+.container_chat_bot .chat .chat-bot textarea {
+  background-color: transparent;
+  border-radius: 16px;
+  border: none;
+  width: 100%;
+  height: 38px;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 10px;
+  resize: none;
+  outline: none;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    cursor: pointer;
+  }
+
+  &::placeholder {
+    color: #f3f6fd;
+    transition: all 0.3s ease;
+  }
+
+  &:focus::placeholder {
+    color: #363636;
+  }
+}
+
+
+
+
+
+
+.playlist-container {
+  justify-items: center;
+  margin-top: 3rem;
+}
+
+.playlist-container h5 {
+  margin-left: 9px;
+}
+
+.addBtn {
+  min-width: 120px;
+  position: relative;
+  cursor: pointer;
+  padding: 5px 0px;
+  border: 0;
+  border-radius: 7px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  background: radial-gradient(ellipse at bottom, rgb(86, 96, 107) 0%, rgb(15, 15, 15) 45%);
+  color: rgb(255, 255, 255, 0.66);
+  transition: all 1s cubic-bezier(0.15, 0.83, 0.66, 1);
+}
+
+
+.addBtn::before {
+  content: "";
+  width: 70%;
+  height: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 15%;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgb(255, 255, 255) 50%,
+      rgba(255, 255, 255, 0) 100%);
+  opacity: 0.2;
+  transition: all 0.1s cubic-bezier(0.15, 0.83, 0.66, 1);
+}
+
+.addBtn:hover {
+  color: rgb(255, 255, 255, 1);
+  transform: scale(1.05) translateY(-2px);
+}
+
+.addBtn:hover::before {
+  opacity: 1;
+}
+
+.playlist-container button {
+  width: 15%;
+  position: absolute;
+  justify-self: anchor-center;
+}
