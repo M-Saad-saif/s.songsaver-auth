@@ -1,5 +1,8 @@
 import React from "react";
 import Authlgog from "./Images/authlogo.png";
+import MusicImg from "./Images/music img.png";
+import { Link } from "react-router-dom";
+
 
 export default function Home() {
   return (
@@ -16,17 +19,17 @@ export default function Home() {
           </p>
         </div>
         <div className="loginsignBtns my-3">
-          <a href="/signup">
+          <Link to="/signup">
             <button className="button">
               Sign Up <i className="fa-solid fa-user-plus"></i>
             </button>
-          </a>
+          </Link>
 
-          <a href="/login">
+          <Link to="/login">
             <button className="button">
               Login <i className="fa-solid fa-arrow-right-to-bracket"></i>
             </button>
-          </a>
+          </Link>
         </div>
 
         <div className="home-card-container d-flex ">
@@ -39,15 +42,33 @@ export default function Home() {
                 width: "80%",
               }}
             />
-            <p style={{textAlign:"justify"}}>
+            <h5>"Authentication"</h5>
+            <p style={{ textAlign: "justify" }}>
+              Sign up today to create your personal music sanctuary. Log in
+              securely to save favorite songs, organize custom playlists, and
+              access your collection anywhere. Build memories through music that
+              stays with you forever, always just one click away. Start your
+              musical journey now!
+            </p>
+          </div>
+
+          <div className="card mx-3">
+            <img src={MusicImg} alt="" />
+            <hr
+              style={{
+                border: "1px solid white",
+                margin: "9px 0",
+                width: "80%",
+              }}
+            />
+            <h5>"Songs"</h5>
+            <p style={{ textAlign: "justify" }}>
               Create your free account to securely log in and save favorite
               songs to your personal music vault. Access your collection
               anytime, sync across devices, and build your ultimate playlist
               library with just a few clicks. Join now!
             </p>
           </div>
-          <div className="card mx-3">aljkdhfsjdfhkjsfhlsdjkfh</div>
-          <div className="card mx-3">aljkdhfsjdfhkjsfhlsdjkfh</div>
         </div>
       </div>
     </>
