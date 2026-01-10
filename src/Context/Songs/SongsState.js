@@ -2,66 +2,121 @@ import React, { useState } from "react";
 import songContext from "./songContext";
 
 export default function SongsState(props) {
+  const inittialSongs = [];
+  const [songs, setSongs] = useState(inittialSongs);
 
-    // const inittialSongs= []
-  const [songs, setSongs] = useState([
-    {
-      _id: "695fb98f5ffb27273cef3565",
-      user: "695fb9065ffb27273cef355c",
-      songName: "unko bhi hum su muhubat ho",
-      link: "saasdbhsfhdad;ajhdiuy8324yu38879384ahd378d",
-      __v: 0,
-    },
-    {
-      _id: "695fb9995ffb27273cef3567",
-      user: "695fb9065ffb27273cef355c",
-      songName: "addat",
-      link: "saasdbhsfhdad;ajhdiuy8324yu38879384ahd378d",
-      __v: 0,
-    },
-    {
-      _id: "6961665b2d9b5bd17b8aa27b",
-      user: "695fb9065ffb27273cef355c",
-      songName: "addat",
-      link: "saasdbhsfhdad;ajhdiuy8324yu38879384ahd378d",
-      __v: 0,
-    },
-    {
-      _id: "696166722d9b5bd17b8aa27d",
-      user: "695fb9065ffb27273cef355c",
-      songName: "tum hi ho",
-      link: "saasdbhsfhdad;ajhdiuy8324yu38879384ahd378d",
-      __v: 0,
-    },
-    {
-      _id: "696166812d9b5bd17b8aa27f",
-      user: "695fb9065ffb27273cef355c",
-      songName: "alone",
-      link: "saasdbhsfhdad;ajhdiuy8324yu38879384ahd378d",
-      __v: 0,
-    },
-    {
-      _id: "6961668a2d9b5bd17b8aa281",
-      user: "695fb9065ffb27273cef355c",
-      songName: "im so lonely",
-      link: "saasdbhsfhdad;ajhdiuy8324yu38879384ahd378d",
-      __v: 0,
-    },
-    {
-      _id: "696166922d9b5bd17b8aa283",
-      user: "695fb9065ffb27273cef355c",
-      songName: "perfect",
-      link: "saasdbhsfhdad;ajhdiuy8324yu38879384ahd378d",
-      __v: 0,
-    },
-    {
-      _id: "696166962d9b5bd17b8aa285",
-      user: "695fb9065ffb27273cef355c",
-      songName: "i love addah",
-      link: "saasdbhsfhdad;ajhdiuy8324yu38879384ahd378d",
-      __v: 0,
-    },
-  ]);
+  // getting all songs
+  const getSongs = async () => {
+    const response = await fetch(
+      "http://localhost:5000/api/songs/fetchallsongs",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk1ZmI5MDY1ZmZiMjcyNzNjZWYzNTVjIn0sImlhdCI6MTc2Nzk5MDk3OH0.jvfi3NP7lZZ6DLaMzrUCNgtti9c0hYMIGaqmrY8wISQ",
+        },
+      }
+    );
 
-  return <songContext.Provider>{props.childern}</songContext.Provider>;
+    const json = await response.json();
+
+    if (!response.ok) {
+      throw new Error(json.error || "Failed to fetch notes");
+    }
+
+    console.log(json);
+    setSongs(json)
+  };
+
+  // adding a song
+  const addSong = async (songName, link) => {
+    const response = await fetch("http://localhost:5000/api/songs/addsong", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk1ZmI5MDY1ZmZiMjcyNzNjZWYzNTVjIn0sImlhdCI6MTc2Nzk5MDk3OH0.jvfi3NP7lZZ6DLaMzrUCNgtti9c0hYMIGaqmrY8wISQ",
+      },
+      body: JSON.stringify({ songName, link }),
+    });
+
+    const song = await response.json();
+    // adding song in the frontend
+    setSongs(songs.concat(song));
+    console.log("adding a song", song);
+  };
+
+  // deleteing a song
+
+  const deleteSong = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/songs/deletesong/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk1ZmI5MDY1ZmZiMjcyNzNjZWYzNTVjIn0sImlhdCI6MTc2Nzk5MDk3OH0.jvfi3NP7lZZ6DLaMzrUCNgtti9c0hYMIGaqmrY8wISQ",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Error response:", response.status);
+        return;
+      }
+
+      const json = await response.json();
+      console.log("song deleted with id of: " + id);
+      console.log(json);
+
+      const newSong = songs.filter((song) => {
+        return song._id !== id;
+      });
+      setSongs(newSong);
+    } catch (error) {
+      console.error("Failed to delete song:", error);
+    }
+  };
+
+  // updating the song
+  const updateSong = async (id, songName, link) => {
+    const response = await fetch(
+      `http://localhost:5000/api/songs/updatesong/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk1ZmI5MDY1ZmZiMjcyNzNjZWYzNTVjIn0sImlhdCI6MTc2Nzk5MDk3OH0.jvfi3NP7lZZ6DLaMzrUCNgtti9c0hYMIGaqmrY8wISQ",
+        },
+        body: JSON.stringify({ songName, link }),
+      }
+    );
+
+    const json = await response.json();
+    console.log(json);
+
+    let newSong = JSON.parse(JSON.stringify(songs));
+
+    for (let index = 0; index < newSong.length; index++) {
+      const element = newSong[index];
+      if (element._id === id) {
+        element.songName = songName;
+        element.link = link;
+        break;
+      }
+    }
+    setSongs(newSong);
+  };
+
+  return (
+    <songContext.Provider
+      value={{ songs, getSongs, addSong, deleteSong, updateSong }}
+    >
+      {props.children}
+    </songContext.Provider>
+  );
 }

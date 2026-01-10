@@ -1,6 +1,49 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import SongItems from "./SongItems";
+import songContext from "../Context/Songs/songContext";
 
 export default function Playlist() {
+  const { addSong } = useContext(songContext);
+
+  const [error, setError] = useState("");
+  const [songs, setSongs] = useState({
+    songName: "",
+    link: "",
+  });
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    setError("");
+    if (!songs.songName.trim() || !songs.link.trim()) return;
+    if (!isValidYouTubeUrl(songs.link)) {
+      setError("Please enter a valid YouTube URL");
+
+      setTimeout(() => {
+        setError("");
+      }, 1500); // Delay in milliseconds
+
+      return;
+    }
+    addSong(songs.songName, songs.link);
+    setSongs({
+      songName: "",
+      link: "",
+    });
+  };
+
+  const onChange = (e) => {
+    setSongs({ ...songs, [e.target.name]: e.target.value });
+  };
+
+  const isValidYouTubeUrl = (url) => {
+    const patterns = [
+      /^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=[\w-]{11}/,
+      /^(https?:\/\/)?(www\.)?youtu\.be\/[\w-]{11}/,
+      /^(https?:\/\/)?(www\.)?youtube\.com\/embed\/[\w-]{11}/,
+    ];
+
+    return patterns.some((pattern) => pattern.test(url));
+  };
   return (
     <div className="playlist-container">
       <div className="container_chat_bot">
@@ -9,9 +52,12 @@ export default function Playlist() {
           <div className="chat">
             <div className="chat-bot">
               <textarea
-                id="chat_bot"
-                name="chat_bot"
+                id="songName"
+                name="songName"
                 placeholder="Song name ... ♬˚"
+                value={songs.songName}
+                required
+                onChange={onChange}
               ></textarea>
             </div>
           </div>
@@ -24,20 +70,28 @@ export default function Playlist() {
           <div className="chat">
             <div className="chat-bot">
               <textarea
-                id="chat_bot"
-                name="chat_bot"
+                id="link"
+                name="link"
                 placeholder="Enter Link ... ✦˚"
+                value={songs.link}
+                onChange={onChange}
               ></textarea>
             </div>
           </div>
         </div>
       </div>
 
-      <button className="button addBtn" >
+      {error && (
+        <div style={{ color: "red", marginBottom: "10px", fontSize: "14px" }}>
+          {error}
+        </div>
+      )}
+
+      <button className="button addBtn " onClick={handleAdd}>
         <div className="inner">Add song</div>
       </button>
 
-      
+      <SongItems  />
     </div>
   );
 }

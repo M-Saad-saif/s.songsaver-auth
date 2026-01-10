@@ -478,3 +478,11 @@ input {
   position: absolute;
   justify-self: anchor-center;
 }
+
+
+
+
+.Songitem-container {
+  margin-top: 12rem;
+  background-color: rgba(70, 70, 70, 0.488);
+}
