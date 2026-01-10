@@ -22,6 +22,7 @@ router.post(
       .withMessage("must be at least 2 chars long"),
   ],
   async (req, res) => {
+    let success = false;
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -36,7 +37,9 @@ router.post(
       // checking user with same email will throw error
       let user = await User.findOne({ email: req.body.email });
       if (user) {
-        return res.status(400).json({ error: "User with this email exist" });
+        return res
+          .status(400)
+          .json({ success, error: "User with this email exist" });
       }
 
       //creating users and savong them in mongooDB
@@ -55,7 +58,8 @@ router.post(
 
       // giving auth token to user in json form
       const authtoken = jwt.sign(data, JWT_SECURE);
-      res.json({ token: authtoken });
+      success = true;
+      res.json({ success, token: authtoken });
     } catch (error) {
       console.log(error.message);
       res.status(500).json("Server issue or error occured");
@@ -74,6 +78,7 @@ router.post(
       .withMessage("must be at least 2 chars long"),
   ],
   async (req, res) => {
+    let success = false
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -86,13 +91,13 @@ router.post(
       // checking if the user with no email try to login
       let user = await User.findOne({ email });
       if (!user) {
-        return res.status(500).json({ error: "no user found with this Email" });
+        return res.status(500).json({success,  error: "no user found with this Email" });
       }
 
       // checking password if uesr put correct password
       let comparePass = await bcrypt.compare(password, user.password);
       if (!comparePass) {
-        return res.status(400).json({ error: "login with correct credential" });
+        return res.status(400).json({ success, error: "login with correct credential" });
       }
 
       const data = {
@@ -103,7 +108,8 @@ router.post(
 
       // giving auth token to user in json form
       const authtoken = jwt.sign(data, JWT_SECURE);
-      res.json({ token: authtoken });
+      success = true
+      res.json({success,  token: authtoken });
     } catch (error) {
       console.log(error.message);
       res.status(500).json("Server issue or error occured");
