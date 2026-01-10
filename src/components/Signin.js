@@ -60,8 +60,10 @@ export default function Signin() {
       console.log(json);
 
       if (json.success) {
-        localStorage.setItem("token", json.authtoken);
+        localStorage.setItem("token", json.token);
         navigate("/playlist");
+      } else {
+        alert("wrong credential");
       }
     } catch (error) {
       console.log(error.message);

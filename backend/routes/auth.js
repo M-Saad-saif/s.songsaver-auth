@@ -109,7 +109,7 @@ router.post(
       // giving auth token to user in json form
       const authtoken = jwt.sign(data, JWT_SECURE);
       success = true
-      res.json({success,  token: authtoken });
+      res.json({success, token: authtoken });
     } catch (error) {
       console.log(error.message);
       res.status(500).json("Server issue or error occured");

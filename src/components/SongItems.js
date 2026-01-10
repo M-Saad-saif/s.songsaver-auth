@@ -1,10 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import songContext from "../Context/Songs/songContext";
+import { useNavigate } from "react-router-dom";
 
 export default function SongItems() {
   const context = useContext(songContext);
+  const navigate = useNavigate();
 
-  const { deleteSong, songs } = context;
+  const { deleteSong, songs, getSongs } = context;
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      getSongs();
+    } else {
+      navigate("/");
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const handleDelete = (id) => {
     deleteSong(id);

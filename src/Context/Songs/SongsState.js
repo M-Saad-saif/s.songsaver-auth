@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import songContext from "./songContext";
 
 export default function SongsState(props) {
@@ -7,49 +7,84 @@ export default function SongsState(props) {
 
   // getting all songs
   const getSongs = async () => {
-    const response = await fetch(
-      "http://localhost:5000/api/songs/fetchallsongs",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk1ZmI5MDY1ZmZiMjcyNzNjZWYzNTVjIn0sImlhdCI6MTc2Nzk5MDk3OH0.jvfi3NP7lZZ6DLaMzrUCNgtti9c0hYMIGaqmrY8wISQ",
-        },
-      }
-    );
-
-    const json = await response.json();
-
-    if (!response.ok) {
-      throw new Error(json.error || "Failed to fetch notes");
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.log("No token found. User not logged in yet.");
+      return;
     }
 
-    console.log(json);
-    setSongs(json)
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/songs/fetchallsongs",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": token,
+          },
+        }
+      );
+
+      const json = await response.json();
+
+      if (!response.ok) {
+        console.error("Error fetching songs:", json.error || "Failed to fetch notes");
+        return;
+      }
+
+      console.log("Songs loaded:", json);
+      setSongs(json);
+    } catch (error) {
+      console.error("Error fetching songs:", error);
+    }
   };
+
+  // // Load songs when component mounts or token changes
+  // useEffect(() => {
+  //   getSongs();
+  // }, []);
 
   // adding a song
   const addSong = async (songName, link) => {
-    const response = await fetch("http://localhost:5000/api/songs/addsong", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk1ZmI5MDY1ZmZiMjcyNzNjZWYzNTVjIn0sImlhdCI6MTc2Nzk5MDk3OH0.jvfi3NP7lZZ6DLaMzrUCNgtti9c0hYMIGaqmrY8wISQ",
-      },
-      body: JSON.stringify({ songName, link }),
-    });
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.warn("No token found. Please login first.");
+      return;
+    }
 
-    const song = await response.json();
-    // adding song in the frontend
-    setSongs(songs.concat(song));
-    console.log("adding a song", song);
+    try {
+      const response = await fetch("http://localhost:5000/api/songs/addsong", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": token,
+        },
+        body: JSON.stringify({ songName, link }),
+      });
+
+      const song = await response.json();
+      
+      if (!response.ok) {
+        console.error("Error adding song:", song);
+        return;
+      }
+      
+      // adding song in the frontend
+      setSongs(songs.concat(song));
+      console.log("adding a song", song);
+    } catch (error) {
+      console.error("Error adding song:", error);
+    }
   };
 
   // deleteing a song
-
   const deleteSong = async (id) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.warn("No token found. Please login first.");
+      return;
+    }
+
     try {
       const response = await fetch(
         `http://localhost:5000/api/songs/deletesong/${id}`,
@@ -57,8 +92,7 @@ export default function SongsState(props) {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            "auth-token":
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk1ZmI5MDY1ZmZiMjcyNzNjZWYzNTVjIn0sImlhdCI6MTc2Nzk5MDk3OH0.jvfi3NP7lZZ6DLaMzrUCNgtti9c0hYMIGaqmrY8wISQ",
+            "auth-token": token,
           },
         }
       );
@@ -83,33 +117,48 @@ export default function SongsState(props) {
 
   // updating the song
   const updateSong = async (id, songName, link) => {
-    const response = await fetch(
-      `http://localhost:5000/api/songs/updatesong/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk1ZmI5MDY1ZmZiMjcyNzNjZWYzNTVjIn0sImlhdCI6MTc2Nzk5MDk3OH0.jvfi3NP7lZZ6DLaMzrUCNgtti9c0hYMIGaqmrY8wISQ",
-        },
-        body: JSON.stringify({ songName, link }),
-      }
-    );
-
-    const json = await response.json();
-    console.log(json);
-
-    let newSong = JSON.parse(JSON.stringify(songs));
-
-    for (let index = 0; index < newSong.length; index++) {
-      const element = newSong[index];
-      if (element._id === id) {
-        element.songName = songName;
-        element.link = link;
-        break;
-      }
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.warn("No token found. Please login first.");
+      return;
     }
-    setSongs(newSong);
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/songs/updatesong/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": token,
+          },
+          body: JSON.stringify({ songName, link }),
+        }
+      );
+
+      const json = await response.json();
+      
+      if (!response.ok) {
+        console.error("Error updating song:", json);
+        return;
+      }
+      
+      console.log(json);
+
+      let newSong = JSON.parse(JSON.stringify(songs));
+
+      for (let index = 0; index < newSong.length; index++) {
+        const element = newSong[index];
+        if (element._id === id) {
+          element.songName = songName;
+          element.link = link;
+          break;
+        }
+      }
+      setSongs(newSong);
+    } catch (error) {
+      console.error("Failed to update song:", error);
+    }
   };
 
   return (
