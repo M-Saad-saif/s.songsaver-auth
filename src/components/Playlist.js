@@ -1,15 +1,18 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import SongItems from "./SongItems";
 import songContext from "../Context/Songs/songContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Playlist() {
-  const { addSong } = useContext(songContext);
+  const navigate = useNavigate();
+  const { addSong, getSongs } = useContext(songContext);
 
   const [error, setError] = useState("");
   const [songs, setSongs] = useState({
     songName: "",
     link: "",
   });
+
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -91,7 +94,7 @@ export default function Playlist() {
         <div className="inner">Add song</div>
       </button>
 
-      <SongItems  />
+      <SongItems />
     </div>
   );
 }

@@ -11,8 +11,6 @@ export default function SongItems() {
   useEffect(() => {
     if (localStorage.getItem("token")) {
       getSongs();
-    } else {
-      navigate("/");
     }
     // eslint-disable-next-line
   }, []);
@@ -20,6 +18,7 @@ export default function SongItems() {
   const handleDelete = (id) => {
     deleteSong(id);
   };
+
   // conversion of link into embaded
   const convertToEmbedUrl = (url) => {
     if (!url) return url;

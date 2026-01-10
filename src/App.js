@@ -5,6 +5,7 @@ import Home from "./components/Home.js";
 import Playlist from "./components/Playlist.js";
 import Login from "./components/Login.js";
 import Signin from "./components/Signin.js";
+import ProtectedRoute from "./components/ProtectedRoute.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -14,9 +15,17 @@ function App() {
         <Navbar />
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/playlist" element={<Playlist />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signin />} />
+          <Route
+            exact
+            path="/playlist"
+            element={
+              <ProtectedRoute>
+                <Playlist />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
         <div
           style={{
