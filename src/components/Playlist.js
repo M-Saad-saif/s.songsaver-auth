@@ -1,18 +1,15 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import SongItems from "./SongItems";
 import songContext from "../Context/Songs/songContext";
-import { useNavigate } from "react-router-dom";
 
 export default function Playlist() {
-  const navigate = useNavigate();
-  const { addSong, getSongs } = useContext(songContext);
+  const { addSong } = useContext(songContext);
 
   const [error, setError] = useState("");
   const [songs, setSongs] = useState({
     songName: "",
     link: "",
   });
-
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -55,6 +52,7 @@ export default function Playlist() {
           <div className="chat">
             <div className="chat-bot">
               <textarea
+                title="Enter song name "
                 id="songName"
                 name="songName"
                 placeholder="Song name ... ♬˚"
@@ -73,6 +71,7 @@ export default function Playlist() {
           <div className="chat">
             <div className="chat-bot">
               <textarea
+                title="Enter Song link"
                 id="link"
                 name="link"
                 placeholder="Enter Link ... ✦˚"
@@ -91,7 +90,9 @@ export default function Playlist() {
       )}
 
       <button className="button addBtn " onClick={handleAdd}>
-        <div className="inner">Add song</div>
+        <div title="Add song" className="inner">
+          Add song
+        </div>
       </button>
 
       <SongItems />

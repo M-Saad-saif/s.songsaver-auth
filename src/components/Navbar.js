@@ -57,8 +57,9 @@ export default function Navbar() {
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-            <li className="nav-item">
+            <li className="nav-item" id="homelink">
               <Link
+                title="Home "
                 className={`nav-link ${
                   location.pathname === "/" ? "active" : ""
                 } mx-3`}
@@ -70,6 +71,7 @@ export default function Navbar() {
             </li>
             <li className="nav-item">
               <Link
+                title="Playlist"
                 className={`nav-link ${
                   location.pathname === "/playlist" ? "active" : ""
                 }`}
@@ -79,8 +81,16 @@ export default function Navbar() {
               </Link>
             </li>
           </ul>
-          <button type="button" className="btn btn-secondary" id="githubBtn">
-            <Link to="https://github.com/M-Saad-saif" target="_blanck">
+          <button
+            type="button"
+            className="btn btn-secondary github-btn"
+            id="githubBtn"
+          >
+            <Link
+              to="https://github.com/M-Saad-saif"
+              target="_blanck"
+              title="Owner's Github"
+            >
               Github<i className="fa-brands fa-github mx-1"></i>
             </Link>
           </button>
@@ -90,7 +100,8 @@ export default function Navbar() {
               ""
             ) : (
               <i
-                className="ri-account-circle-fill fs-2"
+                title="UserProfile"
+                className="ri-account-circle-fill fs-2 profile-icon"
                 id="profile-icon"
                 onClick={openProfileModal}
               ></i>

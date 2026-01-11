@@ -1,10 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import songContext from "../Context/Songs/songContext";
-import { useNavigate } from "react-router-dom";
 
 export default function SongItems() {
   const context = useContext(songContext);
-  const navigate = useNavigate();
 
   const { deleteSong, songs, getSongs } = context;
 
@@ -62,6 +60,7 @@ export default function SongItems() {
               allowFullScreen
             ></iframe>
             <p
+              title="Delete song "
               onClick={() => handleDelete(song._id)}
               style={{
                 background: "red",
