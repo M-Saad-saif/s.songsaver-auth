@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import songContext from "./songContext";
 
 export default function SongsState(props) {
@@ -39,10 +39,6 @@ export default function SongsState(props) {
     }
   };
 
-  // // Load songs when component mounts or token changes
-  // useEffect(() => {
-  //   getSongs();
-  // }, []);
 
   // adding a song
   const addSong = async (songName, link) => {
