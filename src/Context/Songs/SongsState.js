@@ -4,6 +4,7 @@ import songContext from "./songContext";
 export default function SongsState(props) {
   const inittialSongs = [];
   const [songs, setSongs] = useState(inittialSongs);
+  const { setProgress } = props;
 
   // getting all songs
   const getSongs = async () => {
@@ -14,6 +15,7 @@ export default function SongsState(props) {
     }
 
     try {
+      setProgress(10);
       const response = await fetch(
         "http://localhost:5000/api/songs/fetchallsongs",
         {
@@ -28,17 +30,21 @@ export default function SongsState(props) {
       const json = await response.json();
 
       if (!response.ok) {
-        console.error("Error fetching songs:", json.error || "Failed to fetch notes");
+        console.error(
+          "Error fetching songs:",
+          json.error || "Failed to fetch notes"
+        );
         return;
       }
 
       console.log("Songs loaded:", json);
       setSongs(json);
+      setProgress(100);
     } catch (error) {
       console.error("Error fetching songs:", error);
+      setProgress(100);
     }
   };
-
 
   // adding a song
   const addSong = async (songName, link) => {
@@ -49,6 +55,7 @@ export default function SongsState(props) {
     }
 
     try {
+      setProgress(10);
       const response = await fetch("http://localhost:5000/api/songs/addsong", {
         method: "POST",
         headers: {
@@ -59,14 +66,16 @@ export default function SongsState(props) {
       });
 
       const song = await response.json();
-      
+
       if (!response.ok) {
         console.error("Error adding song:", song);
         return;
       }
-      
+
       // adding song in the frontend
       setSongs(songs.concat(song));
+      setProgress(100);
+
       console.log("adding a song", song);
     } catch (error) {
       console.error("Error adding song:", error);
@@ -82,6 +91,8 @@ export default function SongsState(props) {
     }
 
     try {
+      setProgress(10);
+
       const response = await fetch(
         `http://localhost:5000/api/songs/deletesong/${id}`,
         {
@@ -106,6 +117,7 @@ export default function SongsState(props) {
         return song._id !== id;
       });
       setSongs(newSong);
+      setProgress(100);
     } catch (error) {
       console.error("Failed to delete song:", error);
     }
@@ -120,6 +132,8 @@ export default function SongsState(props) {
     }
 
     try {
+      setProgress(10);
+
       const response = await fetch(
         `http://localhost:5000/api/songs/updatesong/${id}`,
         {
@@ -133,12 +147,12 @@ export default function SongsState(props) {
       );
 
       const json = await response.json();
-      
+
       if (!response.ok) {
         console.error("Error updating song:", json);
         return;
       }
-      
+
       console.log(json);
 
       let newSong = JSON.parse(JSON.stringify(songs));
@@ -152,6 +166,7 @@ export default function SongsState(props) {
         }
       }
       setSongs(newSong);
+      setProgress(100);
     } catch (error) {
       console.error("Failed to update song:", error);
     }

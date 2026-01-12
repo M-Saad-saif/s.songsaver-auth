@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import SongItems from "./SongItems";
 import songContext from "../Context/Songs/songContext";
 
-export default function Playlist() {
+export default function Playlist(props) {
   const { addSong } = useContext(songContext);
 
   const [error, setError] = useState("");
@@ -95,7 +95,7 @@ export default function Playlist() {
         </div>
       </button>
 
-      <SongItems />
+      <SongItems  />
     </div>
   );
 }

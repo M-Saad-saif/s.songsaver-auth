@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import songContext from "../Context/Songs/songContext";
 
-export default function SongItems() {
+export default function SongItems(props) {
   const context = useContext(songContext);
 
   const { deleteSong, songs, getSongs } = context;
@@ -72,6 +72,7 @@ export default function SongItems() {
               }}
             >
               <i className="ri-delete-bin-line"></i> Delete
+
             </p>
           </div>
         ))

@@ -17,7 +17,7 @@ export default function UserProfile({ showModal, onClose }) {
       const token = localStorage.getItem("token");
       // if no token found retun
       if (!token) {
-        console.log("no token found");
+        // console.log("no token found");
         setUserDetails(null);
         return;
       }
@@ -110,7 +110,7 @@ export default function UserProfile({ showModal, onClose }) {
         setTimeout(() => setUploadMessage(""), 3000);
       }
     } catch (error) {
-      console.error("Upload error:", error);
+      // console.error("Upload error:", error);
       setUploadMessageType("error");
       setUploadMessage("Error uploading file. Please try again.");
       setTimeout(() => setUploadMessage(""), 3000);
@@ -151,7 +151,7 @@ export default function UserProfile({ showModal, onClose }) {
         }
       );
       const json = await response.json();
-      console.log(json);
+      // console.log(json);
 
       if (json.success || response.ok || json.message === "User deleted successfully") {
         localStorage.removeItem("token");
