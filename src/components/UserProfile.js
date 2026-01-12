@@ -126,7 +126,45 @@ export default function UserProfile({ showModal, onClose }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
+    setUserDetails(null);
     onClose();
+  };
+
+  const handleDelete = async () => {
+    const confirmdelete = window.confirm(
+      "Are you sure you want to delete your account? This action cannot be undone."
+    );
+    if (!confirmdelete) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        "http://localhost:5000/api/auth/deleteuser",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": token,
+          },
+        }
+      );
+      const json = await response.json();
+      console.log(json);
+
+      if (json.success || response.ok || json.message === "User deleted successfully") {
+        localStorage.removeItem("token");
+        navigate("/");
+        setUserDetails(null);
+        onClose();
+      } else {
+        alert(json.error || "Failed to delete account");
+      }
+    } catch (error) {
+      console.error("delete error", error);
+      console.log("error in deletting account");
+    }
   };
 
   return (
@@ -257,7 +295,9 @@ export default function UserProfile({ showModal, onClose }) {
           <button className="btn btn-secondary" onClick={onClose}>
             Close
           </button>
-          <button className="btn btn-danger">Delete Account</button>
+          <button className="btn btn-danger" onClick={handleDelete}>
+            Delete Account
+          </button>
           <button className="btn btn-primary" onClick={handleLogout}>
             Logout
           </button>

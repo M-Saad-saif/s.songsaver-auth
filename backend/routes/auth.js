@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const fetchuser = require("../middleware/fetchUser");
 const upload = require("../utils/multerconfig");
+const Song = require("../models/Songdetails");
 
 // secret key
 const JWT_SECURE = "123456saadsaif123456";
@@ -139,6 +140,10 @@ router.delete("/deleteuser", fetchuser, async (req, res) => {
   try {
     // finding user by id
     const userId = req.user.id;
+
+    // deleting song of asssosiated user
+    const deleteUserSong = await Song.deleteMany({ user: userId });
+    // deleting user
     const user = await User.findByIdAndDelete(userId).select("-password");
 
     // checking if user not found
@@ -146,12 +151,15 @@ router.delete("/deleteuser", fetchuser, async (req, res) => {
       res.status(401).json({ error: "no user found" });
     }
 
-    res.json({ user, message: "User successfully deleted" });
+    res.json({
+      user,
+      deleteUserSong,
+      message: "User successfully and all assosiated deleted",
+    });
   } catch (error) {
     res.status(401).json({ error: "error occured" });
   }
 });
-
 
 //ROUTE 5:  Upload profile pic : POST '/api/auth/uploadProfilePic.  login required
 router.post(
