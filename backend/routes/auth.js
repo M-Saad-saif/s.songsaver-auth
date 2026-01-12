@@ -5,6 +5,9 @@ const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const fetchuser = require("../middleware/fetchUser");
+const upload = require("../utils/multerconfig");
+
+
 
 // secret key
 const JWT_SECURE = "123456saadsaif123456";
@@ -78,7 +81,7 @@ router.post(
       .withMessage("must be at least 2 chars long"),
   ],
   async (req, res) => {
-    let success = false
+    let success = false;
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -91,13 +94,17 @@ router.post(
       // checking if the user with no email try to login
       let user = await User.findOne({ email });
       if (!user) {
-        return res.status(500).json({success,  error: "no user found with this Email" });
+        return res
+          .status(500)
+          .json({ success, error: "no user found with this Email" });
       }
 
       // checking password if uesr put correct password
       let comparePass = await bcrypt.compare(password, user.password);
       if (!comparePass) {
-        return res.status(400).json({ success, error: "login with correct credential" });
+        return res
+          .status(400)
+          .json({ success, error: "login with correct credential" });
       }
 
       const data = {
@@ -108,8 +115,8 @@ router.post(
 
       // giving auth token to user in json form
       const authtoken = jwt.sign(data, JWT_SECURE);
-      success = true
-      res.json({success, token: authtoken });
+      success = true;
+      res.json({ success, token: authtoken });
     } catch (error) {
       console.log(error.message);
       res.status(500).json("Server issue or error occured");
@@ -144,6 +151,39 @@ router.delete("/deleteuser", fetchuser, async (req, res) => {
     res.json({ user, message: "User successfully deleted" });
   } catch (error) {
     res.status(401).json({ error: "error occured" });
+  }
+});
+
+// //ROUTE 5:  Uplaod profile pic : POST '/api/auth/uploadProfilePic.  login required
+// router.post('/uploadProfilePic', upload.single('avatar'),fetchuser, async(req, res)=>{
+//   console.log(req.body);
+// })
+
+//ROUTE 5:  Upload profile pic : POST '/api/auth/uploadProfilePic.  login required
+router.post('/uploadProfilePic', fetchuser, upload.single('profilepic'), async(req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No file uploaded' });
+    }
+
+    const userId = req.user.id;
+    const profilepicPath = `/uploads/${req.file.filename}`;
+
+    // Update user with new profile pic
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { profilepic: profilepicPath },
+      { new: true }
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    res.json({ success: true, user, message: 'Profile picture uploaded successfully' });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ success: false, error: 'Server error: ' + error.message });
   }
 });
 

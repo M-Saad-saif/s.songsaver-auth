@@ -5,6 +5,9 @@ export default function UserProfile({ showModal, onClose }) {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [uploadMessage, setUploadMessage] = useState("");
+  const [uploadMessageType, setUploadMessageType] = useState("");
 
   const fetchUser = async () => {
     setLoading(true);
@@ -51,6 +54,65 @@ export default function UserProfile({ showModal, onClose }) {
     }
   }, [showModal]);
 
+  const handleProfilePicUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      setUploadMessageType("error");
+      setUploadMessage("Please upload a valid image file (JPEG, PNG, GIF, WebP)");
+      setTimeout(() => setUploadMessage(""), 3000);
+      return;
+    }
+
+    // Validate file size (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadMessageType("error");
+      setUploadMessage("File size must be less than 5MB");
+      setTimeout(() => setUploadMessage(""), 3000);
+      return;
+    }
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('profilepic', file);
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/auth/uploadProfilePic", {
+        method: "POST",
+        headers: {
+          "auth-token": token,
+        },
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setUploadMessageType("success");
+        setUploadMessage("Profile picture updated successfully!");
+        setUserDetails(data.user);
+        setTimeout(() => setUploadMessage(""), 3000);
+      } else {
+        setUploadMessageType("error");
+        setUploadMessage(data.error || "Failed to upload profile picture");
+        setTimeout(() => setUploadMessage(""), 3000);
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      setUploadMessageType("error");
+      setUploadMessage("Error uploading file. Please try again.");
+      setTimeout(() => setUploadMessage(""), 3000);
+    } finally {
+      setUploading(false);
+      // Reset file input
+      e.target.value = "";
+    }
+  };
+
   if (!showModal) return null;
 
   const handleLogout = () => {
@@ -65,7 +127,7 @@ export default function UserProfile({ showModal, onClose }) {
         <div className="profile-modal-header">
           <h5>
             <i className="fa-solid fa-user-circle me-2"></i>
-            User Profile
+            Profile Details
           </h5>
           <button className="profile-modal-close" onClick={onClose}>
             &times;
@@ -81,8 +143,46 @@ export default function UserProfile({ showModal, onClose }) {
           ) : userDetails ? (
             <div className="user-details">
               <div className="user-avatar">
-                <i className="fa-solid fa-user fa-3x"></i>
+                {userDetails.profilepic && userDetails.profilepic !== '../uploads/Screenshot 2026-01-12 182242.png' ? (
+                  <img 
+                    src={`http://localhost:5000${userDetails.profilepic}`}
+                    alt="Profile"
+                    className="profile-image"
+                    style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <i className="fa-solid fa-user fa-3x"></i>
+                )}
               </div>
+
+              <div className="profile-upload-section">
+                <label htmlFor="profilePicInput" className="upload-label">
+                  <input
+                    id="profilePicInput"
+                    type="file"
+                    name="profilepic"
+                    className="file-input"
+                    onChange={handleProfilePicUpload}
+                    disabled={uploading}
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                  />
+                  <button 
+                    className="btn btn-info btn-sm"
+                    disabled={uploading}
+                    type="button"
+                    onClick={() => document.getElementById('profilePicInput').click()}
+                  >
+                    {uploading ? 'Uploading...' : 'Choose Profile Picture'}
+                  </button>
+                </label>
+                {uploadMessage && (
+                  <p className={uploadMessageType === 'success' ? 'text-success' : 'text-danger'} style={{ marginTop: '10px', fontSize: '0.9em' }}>
+                    {uploadMessage}
+                  </p>
+                )}
+              </div>
+
               <div className="user-info">
                 <div className="info-row">
                   <span className="info-label">Username:</span>

@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import logo from "./Images/logo1.png";
 import MusicImg from "./Images/music img.png";
 import { Link, useLocation } from "react-router-dom";
