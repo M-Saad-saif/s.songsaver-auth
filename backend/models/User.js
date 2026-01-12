@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const { default: UserProfile } = require("../../src/components/UserProfile");
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
@@ -22,7 +21,7 @@ const UserSchema = new Schema({
   },
   profilepic:{
     type: String,
-    default: '../uploads/Screenshot 2026-01-12 182242.png'
+    default: '../uploads/defaultprofilepic.png'
   },
   date: {
     type: Date,

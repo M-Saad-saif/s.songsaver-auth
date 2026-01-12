@@ -9,17 +9,19 @@ export default function UserProfile({ showModal, onClose }) {
   const [uploadMessage, setUploadMessage] = useState("");
   const [uploadMessageType, setUploadMessageType] = useState("");
 
+  // function of fetching user
   const fetchUser = async () => {
     setLoading(true);
 
     try {
       const token = localStorage.getItem("token");
+      // if no token found retun
       if (!token) {
         console.log("no token found");
         setUserDetails(null);
         return;
       }
-
+      // fetchong user detail
       const response = await fetch("http://localhost:5000/api/auth/getuser", {
         method: "POST",
         headers: {
@@ -54,15 +56,18 @@ export default function UserProfile({ showModal, onClose }) {
     }
   }, [showModal]);
 
+  // function for profile pic
   const handleProfilePicUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
       setUploadMessageType("error");
-      setUploadMessage("Please upload a valid image file (JPEG, PNG, GIF, WebP)");
+      setUploadMessage(
+        "Please upload a valid image file (JPEG, PNG, GIF, WebP)"
+      );
       setTimeout(() => setUploadMessage(""), 3000);
       return;
     }
@@ -77,17 +82,20 @@ export default function UserProfile({ showModal, onClose }) {
 
     setUploading(true);
     const formData = new FormData();
-    formData.append('profilepic', file);
+    formData.append("profilepic", file);
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/auth/uploadProfilePic", {
-        method: "POST",
-        headers: {
-          "auth-token": token,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/auth/uploadProfilePic",
+        {
+          method: "POST",
+          headers: {
+            "auth-token": token,
+          },
+          body: formData,
+        }
+      );
 
       const data = await response.json();
 
@@ -143,12 +151,18 @@ export default function UserProfile({ showModal, onClose }) {
           ) : userDetails ? (
             <div className="user-details">
               <div className="user-avatar">
-                {userDetails.profilepic && userDetails.profilepic !== '../uploads/Screenshot 2026-01-12 182242.png' ? (
-                  <img 
+                {userDetails.profilepic &&
+                userDetails.profilepic !== "../uploads/defaultprofile.png" ? (
+                  <img
                     src={`http://localhost:5000${userDetails.profilepic}`}
                     alt="Profile"
                     className="profile-image"
-                    style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover' }}
+                    style={{
+                      width: "100px",
+                      height: "75px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
                   />
                 ) : (
                   <i className="fa-solid fa-user fa-3x"></i>
@@ -165,19 +179,28 @@ export default function UserProfile({ showModal, onClose }) {
                     onChange={handleProfilePicUpload}
                     disabled={uploading}
                     accept="image/*"
-                    style={{ display: 'none' }}
+                    style={{ display: "none" }}
                   />
-                  <button 
+                  <button
                     className="btn btn-info btn-sm"
                     disabled={uploading}
                     type="button"
-                    onClick={() => document.getElementById('profilePicInput').click()}
+                    onClick={() =>
+                      document.getElementById("profilePicInput").click()
+                    }
                   >
-                    {uploading ? 'Uploading...' : 'Choose Profile Picture'}
+                    {uploading ? "Uploading..." : "Choose Profile Picture"}
                   </button>
                 </label>
                 {uploadMessage && (
-                  <p className={uploadMessageType === 'success' ? 'text-success' : 'text-danger'} style={{ marginTop: '10px', fontSize: '0.9em' }}>
+                  <p
+                    className={
+                      uploadMessageType === "success"
+                        ? "text-success"
+                        : "text-danger"
+                    }
+                    style={{ marginTop: "10px", fontSize: "0.9em" }}
+                  >
                     {uploadMessage}
                   </p>
                 )}

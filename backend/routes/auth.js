@@ -7,8 +7,6 @@ const jwt = require("jsonwebtoken");
 const fetchuser = require("../middleware/fetchUser");
 const upload = require("../utils/multerconfig");
 
-
-
 // secret key
 const JWT_SECURE = "123456saadsaif123456";
 
@@ -154,37 +152,48 @@ router.delete("/deleteuser", fetchuser, async (req, res) => {
   }
 });
 
-// //ROUTE 5:  Uplaod profile pic : POST '/api/auth/uploadProfilePic.  login required
-// router.post('/uploadProfilePic', upload.single('avatar'),fetchuser, async(req, res)=>{
-//   console.log(req.body);
-// })
 
 //ROUTE 5:  Upload profile pic : POST '/api/auth/uploadProfilePic.  login required
-router.post('/uploadProfilePic', fetchuser, upload.single('profilepic'), async(req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ success: false, error: 'No file uploaded' });
+router.post(
+  "/uploadProfilePic",
+  fetchuser,
+  upload.single("profilepic"),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res
+          .status(400)
+          .json({ success: false, error: "No file uploaded" });
+      }
+
+      const userId = req.user.id;
+      const profilepicPath = `/uploads/${req.file.filename}`;
+
+      // Update user with new profile pic
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { profilepic: profilepicPath },
+        { new: true }
+      ).select("-password");
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({ success: false, error: "User not found" });
+      }
+
+      res.json({
+        success: true,
+        user,
+        message: "Profile picture uploaded successfully",
+      });
+    } catch (error) {
+      console.log(error.message);
+      res
+        .status(500)
+        .json({ success: false, error: "Server error: " + error.message });
     }
-
-    const userId = req.user.id;
-    const profilepicPath = `/uploads/${req.file.filename}`;
-
-    // Update user with new profile pic
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { profilepic: profilepicPath },
-      { new: true }
-    ).select('-password');
-
-    if (!user) {
-      return res.status(404).json({ success: false, error: 'User not found' });
-    }
-
-    res.json({ success: true, user, message: 'Profile picture uploaded successfully' });
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ success: false, error: 'Server error: ' + error.message });
   }
-});
+);
 
 module.exports = router;

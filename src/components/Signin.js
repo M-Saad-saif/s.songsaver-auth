@@ -121,7 +121,6 @@ export default function Signin() {
         <label htmlFor="password">Password</label>
         <input
           type={showPassword ? "text" : "password"}
-          // type="password"
           id="password"
           name="password"
           placeholder="••••••••"
