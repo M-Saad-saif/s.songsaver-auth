@@ -1,10 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import songContext from "../Context/Songs/songContext";
 
-export default function SongItems(props) {
-  const context = useContext(songContext);
-
-  const { deleteSong, songs, getSongs } = context;
+export default function SongItems({ songsToDisplay }) {
+  const { deleteSong, getSongs } = useContext(songContext);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -13,39 +11,34 @@ export default function SongItems(props) {
     // eslint-disable-next-line
   }, []);
 
-  const handleDelete = (id) => {
-    deleteSong(id);
-  };
+  const handleDelete = (id) => deleteSong(id);
 
-  // conversion of link into embaded
   const convertToEmbedUrl = (url) => {
     if (!url) return url;
-    // For youtu.be short URLs
     if (url.includes("youtu.be/")) {
       const videoId = url.split("youtu.be/")[1].split("?")[0];
       return `https://www.youtube.com/embed/${videoId}`;
     }
-
-    // For youtube.com/watch URLs
     try {
       if (url.includes("youtube.com/watch")) {
         const urlParams = new URLSearchParams(new URL(url).search);
         const videoId = urlParams.get("v");
         return `https://www.youtube.com/embed/${videoId}`;
       }
-    } catch (e) {
+    } catch {
       return url;
     }
-
     return url;
   };
 
+  const displaySongs = Array.isArray(songsToDisplay) ? songsToDisplay : [];
+
   return (
     <div className="Songitem-container my-5 d-flex flex-wrap">
-      {songs && songs.length === 0 ? (
-        <div className="Songitem-container my-5">No songs added yet.</div>
-      ) : songs && songs.length > 0 ? (
-        songs.map((song) => (
+      {displaySongs.length === 0 ? (
+        <p>No songs found.</p>
+      ) : (
+        songsToDisplay.map((song) => (
           <div className="songname mx-3" key={song._id}>
             <p>
               <strong>{song.songName}</strong>
@@ -60,7 +53,7 @@ export default function SongItems(props) {
               allowFullScreen
             ></iframe>
             <p
-              title="Delete song "
+              title="Delete song"
               onClick={() => handleDelete(song._id)}
               style={{
                 background: "red",
@@ -72,12 +65,9 @@ export default function SongItems(props) {
               }}
             >
               <i className="ri-delete-bin-line"></i> Delete
-
             </p>
           </div>
         ))
-      ) : (
-        <div className="Songitem-container my-5">Loading songs...</div>
       )}
     </div>
   );

@@ -76,6 +76,9 @@ export default function SongsState(props) {
       setSongs(songs.concat(song));
       setProgress(100);
 
+      // Dispatch custom event to notify about song addition
+      window.dispatchEvent(new Event("songAdded"));
+
       console.log("adding a song", song);
     } catch (error) {
       console.error("Error adding song:", error);
@@ -118,6 +121,9 @@ export default function SongsState(props) {
       });
       setSongs(newSong);
       setProgress(100);
+
+      // Dispatch custom event to notify about song deletion
+      window.dispatchEvent(new Event("songDeleted"));
     } catch (error) {
       console.error("Failed to delete song:", error);
     }

@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import songContext from "../Context/Songs/songContext";
 
 export default function UserProfile({ showModal, onClose }) {
   const navigate = useNavigate();
+  const { songs } = useContext(songContext);
+
+  // ======================= States =========================
   const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState("");
   const [uploadMessageType, setUploadMessageType] = useState("");
 
-  // function of fetching user
+  // ======================= Fetching user =========================
   const fetchUser = async () => {
     setLoading(true);
 
@@ -54,9 +58,22 @@ export default function UserProfile({ showModal, onClose }) {
     if (showModal) {
       fetchUser();
     }
+
+    // Listen for song add/delete events to refresh user details
+    const handleSongChange = () => {
+      fetchUser();
+    };
+
+    window.addEventListener("songAdded", handleSongChange);
+    window.addEventListener("songDeleted", handleSongChange);
+
+    return () => {
+      window.removeEventListener("songAdded", handleSongChange);
+      window.removeEventListener("songDeleted", handleSongChange);
+    };
   }, [showModal]);
 
-  // function for profile pic
+  // ======================= Profile Pic Upload =========================
   const handleProfilePicUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -123,6 +140,7 @@ export default function UserProfile({ showModal, onClose }) {
 
   if (!showModal) return null;
 
+  // ======================= logout user =========================
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
@@ -130,6 +148,7 @@ export default function UserProfile({ showModal, onClose }) {
     onClose();
   };
 
+  // ======================= deleteUser user =========================
   const handleDelete = async () => {
     const confirmdelete = window.confirm(
       "Are you sure you want to delete your account? This action cannot be undone."
@@ -153,7 +172,11 @@ export default function UserProfile({ showModal, onClose }) {
       const json = await response.json();
       // console.log(json);
 
-      if (json.success || response.ok || json.message === "User deleted successfully") {
+      if (
+        json.success ||
+        response.ok ||
+        json.message === "User deleted successfully"
+      ) {
         localStorage.removeItem("token");
         navigate("/");
         setUserDetails(null);
@@ -167,6 +190,7 @@ export default function UserProfile({ showModal, onClose }) {
     }
   };
 
+  // ======================= Fetching  =========================
   return (
     <div className={`profile-modal-backdrop ${showModal ? "show" : ""}`}>
       <div className="profile-modal-content">
@@ -269,7 +293,7 @@ export default function UserProfile({ showModal, onClose }) {
                 <div className="info-row">
                   <span className="info-label">Songs Saved:</span>
                   <span className="info-value truncated-id">
-                    {userDetails.songName?.length || 0}
+                    {songs.length}
                   </span>
                 </div>
 
