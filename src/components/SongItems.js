@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react";
+import emptyEmoji from "./Images/emptyEmoji.png";
 import songContext from "../Context/Songs/songContext";
 
 export default function SongItems({ songsToDisplay }) {
@@ -31,21 +32,28 @@ export default function SongItems({ songsToDisplay }) {
     return url;
   };
 
+  function capitalizeFirstLetter(string) {
+    if (string.length === 0) {
+      return "";
+    }
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const displaySongs = Array.isArray(songsToDisplay) ? songsToDisplay : [];
 
   return (
     <div className="Songitem-container my-5 d-flex flex-wrap">
       {displaySongs.length === 0 ? (
-        <p>No songs found.</p>
+        <img src={emptyEmoji} alt="" style={{ width: "40px " }} />
       ) : (
         songsToDisplay.map((song) => (
           <div className="songname mx-3" key={song._id}>
             <p>
-              <strong>{song.songName}</strong>
+              <strong>{capitalizeFirstLetter(song.songName)}</strong>
             </p>
             <iframe
               title={song.songName}
-              width="300"
+              width="250"
               height="200"
               src={convertToEmbedUrl(song.link)}
               frameBorder="0"
@@ -53,16 +61,9 @@ export default function SongItems({ songsToDisplay }) {
               allowFullScreen
             ></iframe>
             <p
+              id="deletesongBTN"
               title="Delete song"
               onClick={() => handleDelete(song._id)}
-              style={{
-                background: "red",
-                width: "54%",
-                textAlign: "center",
-                borderRadius: "10px",
-                justifySelf: "center",
-                cursor: "pointer",
-              }}
             >
               <i className="ri-delete-bin-line"></i> Delete
             </p>

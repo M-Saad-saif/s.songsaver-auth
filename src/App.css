@@ -565,11 +565,6 @@ input {
   }
 }
 
-
-
-
-
-
 .playlist-container {
   justify-items: center;
   margin-top: 3rem;
@@ -591,7 +586,6 @@ input {
   color: rgb(255, 255, 255, 0.66);
   transition: all 1s cubic-bezier(0.15, 0.83, 0.66, 1);
 }
-
 
 .addBtn::before {
   content: "";
@@ -625,18 +619,47 @@ input {
 }
 
 
-
-
 .Songitem-container {
-  margin-top: 12rem;
   background-color: rgba(70, 70, 70, 0.488);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  max-width: 98%;
+  justify-content: center;
 }
 
+.songname {
+  background-color: #5757574b;
+  border-radius: 12px;
+  padding: 0px 15px;
+  margin: 15px;
+  transition: transform 0.1s ease-in-out;
+}
 
+.songname:hover {
+  background-color: #a0a0a04b;
+  transform: scale(1.005) translateY(-4px);
+}
 
+.songname p {
+  margin-bottom: 5px;
+}
 
+#deletesongBTN {
+  background: red;
+  width: 54%;
+  text-align: center;
+  border-radius: 10px;
+  justify-self: center;
+  cursor: pointer;
+  transition: transform 0.05s ease-in-out;
+}
 
+#deletesongBTN:hover {
+  background: rgb(197, 0, 0);
+  transform: scale(1.05) translateY(-2px);
 
+}
 
 /* ===========================================profile icon=========================================  */
 .profile-icon {
@@ -864,8 +887,6 @@ input {
 
 
 .my-loading-bar {
-    box-shadow: rgba(241, 241, 241, 0.945) -1px 4px 7px 0px;
+  box-shadow: rgba(241, 241, 241, 0.945) -1px 4px 7px 0px;
 
 }
-
-

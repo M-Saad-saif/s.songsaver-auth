@@ -104,8 +104,14 @@ export default function Playlist() {
       {/* Search */}
       <div className="d-flex flex-col">
         <input
+          style={{
+            width: "23rem",
+            border: "none",
+            height: "40px",
+            marginBottom: "19px",
+          }}
           type="text"
-          placeholder="Search song..."
+          placeholder="Search song ... 🔍"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />

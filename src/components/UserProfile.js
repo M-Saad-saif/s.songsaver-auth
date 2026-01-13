@@ -4,7 +4,7 @@ import songContext from "../Context/Songs/songContext";
 
 export default function UserProfile({ showModal, onClose }) {
   const navigate = useNavigate();
-  const { songs } = useContext(songContext);
+  const { songs } = useContext(songContext); //take this context for the song counts in profile
 
   // ======================= States =========================
   const [userDetails, setUserDetails] = useState(null);
