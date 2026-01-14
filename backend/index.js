@@ -3,12 +3,33 @@ const cors = require("cors");
 const path = require("path");
 const connctToMongoDB = require("./db");
 require("dotenv").config({ path: path.join(__dirname, ".env") });
+const app = express();
 
 // making connection to mongoDB
 connctToMongoDB();
 
-const app = express();
-app.use(cors());
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://s-songsaver-auth.vercel.app/",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin like Postman, curl, mobile apps
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS error: Origin not allowed"), false);
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization", "auth-token"],
+  })
+);
 
 // middleware to parse json body
 app.use(express.json());
