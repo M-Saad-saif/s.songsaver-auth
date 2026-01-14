@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const connctToMongoDB = require("./db");
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 // making connection to mongoDB
 connctToMongoDB();
@@ -22,7 +23,7 @@ app.get("/health", (req, res) => {
   res.send({ status: "OK", message: "server is running and healthy" });
 });
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`backend is running on http://localhost:${port}`);
 });

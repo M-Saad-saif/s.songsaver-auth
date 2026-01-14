@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 // secret key
-const JWT_SECURE = "123456saadsaif123456";
+const JWT_SECURE = process.env.JWT_SECRET;
 
 const fetchuser = (req, res, next) => {
   // get token from header
@@ -16,7 +16,7 @@ const fetchuser = (req, res, next) => {
   try {
     //   verrifying token
     const data = jwt.verify(token, JWT_SECURE);
-    req.user = data.user;
+    req.user = data.user; 
 
     next();
   } catch (error) {

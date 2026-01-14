@@ -7,9 +7,10 @@ const jwt = require("jsonwebtoken");
 const fetchuser = require("../middleware/fetchUser");
 const upload = require("../utils/multerconfig");
 const Song = require("../models/Songdetails");
+require("dotenv").config();
 
 // secret key
-const JWT_SECURE = "123456saadsaif123456";
+const JWT_SECURE = process.env.JWT_SECRET;
 
 //ROUTE 1: creating a user using : POST '/api/auth/createuser. no login required
 router.post(
@@ -94,7 +95,7 @@ router.post(
       let user = await User.findOne({ email });
       if (!user) {
         return res
-          .status(500)
+          .status(400)
           .json({ success, error: "no user found with this Email" });
       }
 

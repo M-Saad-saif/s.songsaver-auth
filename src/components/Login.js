@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [credential, setCredential] = useState("");
+  const [credential, setCredential] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -13,10 +13,9 @@ export default function Login() {
     setShowPassword(!showPassword);
   };
 
-  const hostURL = "http://localhost:5000";
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const hostURL = "http://localhost:5000";
 
     const response = await fetch(`${hostURL}/api/auth/login`, {
       method: "POST",
