@@ -15,7 +15,7 @@ export default function UserProfile({ showModal, onClose }) {
 
   // ======================= Fetching user =========================
 
-  const hostURL = process.env.REACT_APP_BACKEND_UR || "http://localhost:5000";
+  const hostURL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
   const fetchUser = async () => {
     setLoading(true);
