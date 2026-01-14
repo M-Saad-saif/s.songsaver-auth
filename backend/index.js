@@ -8,9 +8,10 @@ const app = express();
 // making connection to mongoDB
 connctToMongoDB();
 
+// front end urls allowed to access backend
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://s-songsaver-auth.vercel.app/",
+  "https://s-songsaver-auth.vercel.app",
 ];
 
 app.use(
@@ -25,7 +26,7 @@ app.use(
         callback(new Error("CORS error: Origin not allowed"), false);
       }
     },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization", "auth-token"],
   })
