@@ -6,7 +6,7 @@ export default function SongsState(props) {
   const [songs, setSongs] = useState(inittialSongs);
   const { setProgress } = props;
 
-  const hostURL = 'http://localhost:5000'
+  const hostURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000'
   
 
   // getting all songs
