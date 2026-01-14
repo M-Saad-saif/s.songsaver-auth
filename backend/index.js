@@ -9,26 +9,22 @@ const app = express();
 connctToMongoDB();
 
 // front end urls allowed to access backend
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://s-songsaver-auth.vercel.app",
-];
+// const allowedOrigins = [
+//   "http://localhost:3000",
+//   "https://s-songsaver-auth.vercel.app",
+// ];
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin like Postman, curl, mobile apps
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS error: Origin not allowed"), false);
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization", "auth-token"],
+    origin: "*", // Allow ALL origins for now
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    // credentials: true,
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "auth-token",
+      "X-Requested-With",
+    ],
   })
 );
 
