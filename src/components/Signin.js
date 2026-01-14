@@ -23,6 +23,8 @@ export default function Signin() {
     setShowCPassword(!showCPassword);
   };
 
+  const hostURL = 'http://localhost:5000'
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -46,7 +48,7 @@ export default function Signin() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/createuser",
+        `${hostURL}/api/auth/createuser`,
         {
           method: "POST",
           headers: {

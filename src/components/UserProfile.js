@@ -14,6 +14,9 @@ export default function UserProfile({ showModal, onClose }) {
   const [uploadMessageType, setUploadMessageType] = useState("");
 
   // ======================= Fetching user =========================
+
+  const hostURL = 'http://localhost:5000'
+
   const fetchUser = async () => {
     setLoading(true);
 
@@ -26,7 +29,7 @@ export default function UserProfile({ showModal, onClose }) {
         return;
       }
       // fetchong user detail
-      const response = await fetch("http://localhost:5000/api/auth/getuser", {
+      const response = await fetch(`${hostURL}/api/auth/getuser`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +107,7 @@ export default function UserProfile({ showModal, onClose }) {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:5000/api/auth/uploadProfilePic",
+        `${hostURL}/api/auth/uploadProfilePic`,
         {
           method: "POST",
           headers: {
@@ -160,7 +163,7 @@ export default function UserProfile({ showModal, onClose }) {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:5000/api/auth/deleteuser",
+        `${hostURL}/api/auth/deleteuser`,
         {
           method: "DELETE",
           headers: {
@@ -216,7 +219,7 @@ export default function UserProfile({ showModal, onClose }) {
                 {userDetails.profilepic &&
                 userDetails.profilepic !== "../uploads/defaultprofile.png" ? (
                   <img
-                    src={`http://localhost:5000${userDetails.profilepic}`}
+                    src={`${hostURL}${userDetails.profilepic}`}
                     alt="Profile"
                     className="profile-image"
                     style={{
@@ -316,7 +319,11 @@ export default function UserProfile({ showModal, onClose }) {
         </div>
 
         <div className="profile-modal-footer">
-          <button className="btn btn-danger" id="DeleteAccBTN" onClick={handleDelete}>
+          <button
+            className="btn btn-danger"
+            id="DeleteAccBTN"
+            onClick={handleDelete}
+          >
             Delete Account
           </button>
           <button className="btn btn-secondary" onClick={onClose}>
@@ -327,7 +334,7 @@ export default function UserProfile({ showModal, onClose }) {
             id="logoutBTN"
             onClick={handleLogout}
           >
-            Logout 
+            Logout
           </button>
         </div>
       </div>

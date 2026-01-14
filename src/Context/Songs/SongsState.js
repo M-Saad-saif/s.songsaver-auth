@@ -6,6 +6,9 @@ export default function SongsState(props) {
   const [songs, setSongs] = useState(inittialSongs);
   const { setProgress } = props;
 
+  const hostURL = 'http://localhost:5000'
+  
+
   // getting all songs
   const getSongs = async () => {
     const token = localStorage.getItem("token");
@@ -17,7 +20,7 @@ export default function SongsState(props) {
     try {
       setProgress(10);
       const response = await fetch(
-        "http://localhost:5000/api/songs/fetchallsongs",
+        `${hostURL}/api/songs/fetchallsongs`,
         {
           method: "GET",
           headers: {
@@ -56,7 +59,7 @@ export default function SongsState(props) {
 
     try {
       setProgress(10);
-      const response = await fetch("http://localhost:5000/api/songs/addsong", {
+      const response = await fetch(`${hostURL}/api/songs/addsong`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +100,7 @@ export default function SongsState(props) {
       setProgress(10);
 
       const response = await fetch(
-        `http://localhost:5000/api/songs/deletesong/${id}`,
+        `${hostURL}/api/songs/deletesong/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -141,7 +144,7 @@ export default function SongsState(props) {
       setProgress(10);
 
       const response = await fetch(
-        `http://localhost:5000/api/songs/updatesong/${id}`,
+        `${hostURL}/api/songs/updatesong/${id}`,
         {
           method: "PUT",
           headers: {
