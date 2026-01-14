@@ -15,7 +15,7 @@ export default function UserProfile({ showModal, onClose }) {
 
   // ======================= Fetching user =========================
 
-  const hostURL = 'http://localhost:5000'
+  const hostURL = process.env.REACT_APP_BACKEND_UR || "http://localhost:5000";
 
   const fetchUser = async () => {
     setLoading(true);
@@ -106,16 +106,13 @@ export default function UserProfile({ showModal, onClose }) {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${hostURL}/api/auth/uploadProfilePic`,
-        {
-          method: "POST",
-          headers: {
-            "auth-token": token,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${hostURL}/api/auth/uploadProfilePic`, {
+        method: "POST",
+        headers: {
+          "auth-token": token,
+        },
+        body: formData,
+      });
 
       const data = await response.json();
 
@@ -162,16 +159,13 @@ export default function UserProfile({ showModal, onClose }) {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${hostURL}/api/auth/deleteuser`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": token,
-          },
-        }
-      );
+      const response = await fetch(`${hostURL}/api/auth/deleteuser`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": token,
+        },
+      });
       const json = await response.json();
       // console.log(json);
 

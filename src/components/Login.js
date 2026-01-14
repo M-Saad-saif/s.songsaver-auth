@@ -15,7 +15,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const hostURL = "http://localhost:5000";
+    const hostURL = process.env.REACT_APP_BACKEND_UR || "http://localhost:5000";
 
     const response = await fetch(`${hostURL}/api/auth/login`, {
       method: "POST",

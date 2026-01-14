@@ -23,7 +23,7 @@ export default function Signin() {
     setShowCPassword(!showCPassword);
   };
 
-  const hostURL = 'http://localhost:5000'
+    const hostURL = process.env.REACT_APP_BACKEND_UR || "http://localhost:5000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
