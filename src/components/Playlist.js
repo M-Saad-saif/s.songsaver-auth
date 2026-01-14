@@ -102,10 +102,10 @@ export default function Playlist() {
       )}
 
       {/* Search */}
-      <div className="d-flex flex-col">
+      <div className=" search-song d-flex flex-col">
         <input
           style={{
-            width: "23rem",
+            width: "30rem",
             border: "none",
             height: "40px",
             marginBottom: "19px",

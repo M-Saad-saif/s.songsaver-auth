@@ -316,14 +316,18 @@ export default function UserProfile({ showModal, onClose }) {
         </div>
 
         <div className="profile-modal-footer">
+          <button className="btn btn-danger" id="DeleteAccBTN" onClick={handleDelete}>
+            Delete Account
+          </button>
           <button className="btn btn-secondary" onClick={onClose}>
             Close
           </button>
-          <button className="btn btn-danger" onClick={handleDelete}>
-            Delete Account
-          </button>
-          <button className="btn btn-primary" onClick={handleLogout}>
-            Logout
+          <button
+            className="btn btn-primary"
+            id="logoutBTN"
+            onClick={handleLogout}
+          >
+            Logout 
           </button>
         </div>
       </div>

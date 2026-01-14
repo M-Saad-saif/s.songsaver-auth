@@ -42,14 +42,14 @@ export default function SongItems({ songsToDisplay }) {
   const displaySongs = Array.isArray(songsToDisplay) ? songsToDisplay : [];
 
   return (
-    <div className="Songitem-container my-5 d-flex flex-wrap">
+    <div className="Songitem-container d-flex flex-wrap">
       {displaySongs.length === 0 ? (
         <img src={emptyEmoji} alt="" style={{ width: "40px " }} />
       ) : (
         songsToDisplay.map((song) => (
           <div className="songname mx-3" key={song._id}>
             <p>
-              <strong>{capitalizeFirstLetter(song.songName)}</strong>
+              <strong><i className="ri-star-s-fill"></i> {capitalizeFirstLetter(song.songName)}</strong>
             </p>
             <iframe
               title={song.songName}
