@@ -176,7 +176,7 @@ router.post(
       }
 
       const userId = req.user.id;
-      const profilepicPath = `/uploads/${req.file.filename}`;
+      const profilepicPath = req.file.path; // Cloudinary URL
 
       // Update user with new profile pic
       const user = await User.findByIdAndUpdate(

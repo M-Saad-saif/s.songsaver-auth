@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 export default function Login() {
   const navigate = useNavigate();
   const [credential, setCredential] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { email, password } = credential;
 
@@ -15,7 +17,9 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const hostURL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+    setLoading(true);
+    const hostURL =
+      process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
     const response = await fetch(`${hostURL}/api/auth/login`, {
       method: "POST",
@@ -35,6 +39,7 @@ export default function Login() {
     } else {
       setError("Wrong password or email");
     }
+    setLoading(false);
   };
 
   const onChange = (e) => {
@@ -48,6 +53,13 @@ export default function Login() {
         <div className="shape"></div>
         <div className="shape" id="login-bottom-shape"></div>
       </div>
+
+      {/* {loading && (
+        <div className="loader-container">
+          <div className="spinner"></div>
+          <p>Waking up server, please wait...</p>
+        </div>
+      )} */}
 
       <form className="Login-Form" onSubmit={handleSubmit}>
         <h3>Login</h3>
@@ -102,9 +114,27 @@ export default function Login() {
           </div>
         )}
 
-        <button className="signupBtns ">
-          Login<i className="fa-solid fa-arrow-right-to-bracket text-dark"></i>
+        <div
+          style={{
+            justifySelf: "anchor-center",
+            textAlign: "center",
+            marginTop: " 25px",
+          }}
+        >
+          <ClipLoader
+            color={"#ffffff"}
+            loading={loading}
+            size={35}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+          {loading && <p>waking up the server</p>}
+        </div>
+        <button className="signupBtns" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+          <i className="fa-solid fa-arrow-right-to-bracket text-dark"></i>
         </button>
+
         <Link to="/">
           <button className="signupBtns" id="homeBtn" type="submit">
             Home

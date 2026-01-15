@@ -32,7 +32,7 @@ app.use(
 app.use(express.json());
 
 // Serve static files from uploads folder
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/songs", require("./routes/songs"));
 

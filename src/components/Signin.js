@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 export default function Signin() {
   let navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function Signin() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState("");
   const [showCPassword, setShowCPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -23,11 +25,11 @@ export default function Signin() {
     setShowCPassword(!showCPassword);
   };
 
-    const hostURL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+  const hostURL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     const { firstName, lastName, email, password, cpassword } = Credential;
 
     if (!firstName || !lastName || !email || !password || !cpassword) {
@@ -47,16 +49,13 @@ export default function Signin() {
     setError("");
 
     try {
-      const response = await fetch(
-        `${hostURL}/api/auth/createuser`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ firstName, lastName, email, password }),
-        }
-      );
+      const response = await fetch(`${hostURL}/api/auth/createuser`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ firstName, lastName, email, password }),
+      });
 
       const json = await response.json();
       // console.log(json);
@@ -70,6 +69,7 @@ export default function Signin() {
     } catch (error) {
       console.log(error.message);
     }
+    setLoading(false);
   };
 
   const onChange = (e) => {
@@ -192,8 +192,25 @@ export default function Signin() {
           </div>
         )}
 
+        <div
+          style={{
+            justifySelf: "anchor-center",
+            textAlign: "center",
+            marginTop: " 25px",
+          }}
+        >
+          <ClipLoader
+            color={"#ffffff"}
+            loading={loading}
+            size={35}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+          {loading && <p>Please wait</p>}
+        </div>
+
         <button className="signupBtns " type="submit">
-          Sign Up
+          {loading ? "Signing Up.... " : "Sign Up"}
           <small>
             <i className="fa-solid fa-user-plus text-dark"></i>
           </small>
