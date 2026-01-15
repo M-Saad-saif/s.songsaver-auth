@@ -213,7 +213,7 @@ export default function UserProfile({ showModal, onClose }) {
                 {userDetails.profilepic &&
                 userDetails.profilepic !== "../uploads/defaultprofile.png" ? (
                   <img
-                    src={`${hostURL}${userDetails.profilepic}`}
+                    src={`${userDetails.profilepic}`}
                     alt="Profile"
                     className="profile-image"
                     style={{

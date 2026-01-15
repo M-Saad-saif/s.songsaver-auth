@@ -8,17 +8,10 @@ const app = express();
 // making connection to mongoDB
 connctToMongoDB();
 
-// front end urls allowed to access backend
-// const allowedOrigins = [
-//   "http://localhost:3000",
-//   "https://s-songsaver-auth.vercel.app",
-// ];
-
 app.use(
   cors({
-    origin: "*", // Allow ALL origins for now
+    origin: "*", // Allowign aLL origins for now
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    // credentials: true,
     allowedHeaders: [
       "Content-Type",
       "Authorization",
@@ -31,8 +24,6 @@ app.use(
 // middleware to parse json body
 app.use(express.json());
 
-// Serve static files from uploads folder
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/songs", require("./routes/songs"));
 
