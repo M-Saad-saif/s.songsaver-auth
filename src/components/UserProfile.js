@@ -187,7 +187,7 @@ export default function UserProfile({ showModal, onClose }) {
     }
   };
 
-  // ======================= Fetching  =========================
+  // ======================= rendering  =========================
   return (
     <div className={`profile-modal-backdrop ${showModal ? "show" : ""}`}>
       <div className="profile-modal-content">

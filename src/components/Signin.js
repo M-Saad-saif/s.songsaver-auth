@@ -206,7 +206,7 @@ export default function Signin() {
             aria-label="Loading Spinner"
             data-testid="loader"
           />
-          {loading && <p>Please wait</p>}
+          {loading && <small><p>Creating your account… Please wait.</p></small>}
         </div>
 
         <button className="signupBtns " type="submit">
