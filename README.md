@@ -1,70 +1,147 @@
-# Getting Started with Create React App
+# 🎵 SongSaver
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**SongSaver** is a modern, full-stack web application that allows users to search, save, and manage their favorite songs. It features secure user authentication, personalized profiles, and a clean, responsive interface.
 
-## Available Scripts
+**Live Demo:** [s-songsaver-auth.vercel.app](https://s-songsaver-auth.vercel.app) | **GitHub:** [M-Saad-saif/s.songsaver-auth](https://github.com/M-Saad-saif/s.songsaver-auth)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## ✨ Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 🔐 **Secure User Authentication**
+*   Complete user registration and login system.
+*   Secure logout functionality.
+*   Protected user profiles and saved songs.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🎶 **Song Management**
+*   Search for songs using an integrated music API.
+*   View and manage all your saved songs in one place.
 
-### `npm test`
+### 👤 **User Profile**
+*   Add profile picture.
+*   Personalized user profile page.
+*   Displays user information and saved song history.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 🚀 **Modern Tech Stack**
+*   **Frontend:** Built with React for a fast, dynamic user interface.
+*   **Backend:** Node.js/Express server for API logic and security.
+*   **Storage:** Integrated with Cloudinary for potential media management.
+*   **Deployment:** Seamlessly deployed on Vercel.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🛠️ Tech Stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+*   **Frontend:** React, JavaScript (ES6+), CSS
+*   **Backend:** Node.js, Express
+*   **Database:** MongoDB - Atlas
+*   **File Storage:** Cloudinary, Multer
+*   **Authentication:** JWT
+*   **Deployment:** Vercel (Frontend & Backend)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🚀 Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Follow these instructions to get a copy of the project running on your local machine.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Prerequisites
+*   **Node.js** (v16 or later) and **npm** installed.
+*   A **Cloudinary** account for file storage (optional, if using upload features).
+*   A **database** instance (MongoDB Atlas or similar) if applicable.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Installation & Setup
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/M-Saad-saif/s.songsaver-auth.git
+    cd s.songsaver-auth
+    ```
 
-## Learn More
+2.  **Install frontend dependencies**
+    ```bash
+    npm install
+    ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3.  **Install backend dependencies**
+    ```bash
+    cd backend
+    npm install
+    cd ..
+    ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+4.  **Configure Environment Variables**
+    *   In the `/backend` directory, create a `.env` file.
+    *   Add your necessary keys (database URL, Cloudinary credentials, JWT secret, etc.):
+    ```
+    DATABASE_URL=your_database_connection_string
+    CLOUDINARY_CLOUD_NAME=your_cloud_name
+    CLOUDINARY_API_KEY=your_api_key
+    CLOUDINARY_API_SECRET=your_api_secret
+    JWT_SECRET=your_super_secret_jwt_key
+    MONGODB_URL=your_url
+    ```
 
-### Code Splitting
+### Running the Application
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Development Mode (Frontend):**
+```bash
+npm start
+```
+Runs the React app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-### Analyzing the Bundle Size
+**Running the Backend Server:**
+```bash
+cd backend
+node server.js
+# or, if using nodemon for auto-restarts:
+# nodemon server.js
+```
+The backend API will typically run on a port like `http://localhost:5000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+**Build for Production:**
+```bash
+npm run build
+```
+Builds the app for production to the `build` folder, optimized for performance.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🌐 Deployment
 
-### Advanced Configuration
+This project is configured for easy deployment on **Vercel**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Vercel Deployment Settings (Based on `vercel.json`):
+*   **Framework Preset:** `create-react-app`
+*   **Build Command:** `npm run build`
+*   **Output Directory:** `build`
+*   **Install Command:** `npm install`
 
-### Deployment
+To deploy:
+1.  Push your code to GitHub.
+2.  Import the project in the [Vercel Dashboard](https://vercel.com/new).
+3.  Add your environment variables in the project settings.
+4.  Vercel will automatically deploy on every push to the main branch.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## 🤝 Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Contributions are welcome! If you have suggestions to improve this project, please follow these steps:
+
+1.  Fork the repository.
+2.  Create a new feature branch (`git checkout -b feature/AmazingFeature`).
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4.  Push to the branch (`git push origin feature/AmazingFeature`).
+5.  Open a Pull Request on GitHub.
+
+---
+
+## 👤 Author
+
+**M Saad Saif**
+*   GitHub: [@M-Saad-saif](https://github.com/M-Saad-saif)
+*   Project Link: [https://github.com/M-Saad-saif/s.songsaver-auth](https://github.com/M-Saad-saif/s.songsaver-auth)
+
+---
+*📊 **Project Stats (as of Jan 16, 2026):** 42 Commits | Languages: JavaScript (76.4%), CSS (21.9%), HTML (1.7%)*
