@@ -64,6 +64,7 @@ export default function UserProfile({ showModal, onClose }) {
       fetchUser();
     }
     // Listen for song add/delete events to refresh user details
+    // eslint-disable-next-line
   }, [showModal]);
 
   // ======================= Profile Pic Upload =========================
