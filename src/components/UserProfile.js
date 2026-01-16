@@ -74,7 +74,8 @@ export default function UserProfile({ showModal, onClose }) {
       window.removeEventListener("songAdded", handleSongChange);
       window.removeEventListener("songDeleted", handleSongChange);
     };
-  }, [showModal]);
+     // eslint-disable-next-line
+  }, []);
 
   // ======================= Profile Pic Upload =========================
   const handleProfilePicUpload = async (e) => {
