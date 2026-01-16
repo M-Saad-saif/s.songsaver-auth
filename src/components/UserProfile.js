@@ -22,12 +22,14 @@ export default function UserProfile({ showModal, onClose }) {
 
     try {
       const token = localStorage.getItem("token");
+
       // if no token found retun
       if (!token) {
-        // console.log("no token found");
         setUserDetails(null);
+        setLoading(false);
         return;
       }
+
       // fetchong user detail
       const response = await fetch(`${hostURL}/api/auth/getuser`, {
         method: "POST",
@@ -61,21 +63,8 @@ export default function UserProfile({ showModal, onClose }) {
     if (showModal) {
       fetchUser();
     }
-
     // Listen for song add/delete events to refresh user details
-    const handleSongChange = () => {
-      fetchUser();
-    };
-
-    window.addEventListener("songAdded", handleSongChange);
-    window.addEventListener("songDeleted", handleSongChange);
-
-    return () => {
-      window.removeEventListener("songAdded", handleSongChange);
-      window.removeEventListener("songDeleted", handleSongChange);
-    };
-     // eslint-disable-next-line
-  }, []);
+  }, [showModal]);
 
   // ======================= Profile Pic Upload =========================
   const handleProfilePicUpload = async (e) => {
